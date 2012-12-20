@@ -5,7 +5,7 @@
 package com.testviewsoft.bean;
 
 import com.testviewsoft.dao.DaoImpl;
-import com.testviewsoft.dao.impl.PaisesDaoImpl;;
+import com.testviewsoft.dao.impl.PaisesDaoImpl;
 import com.testviewsoft.entity.Paises;
 import java.util.List;
 import java.util.logging.Level;

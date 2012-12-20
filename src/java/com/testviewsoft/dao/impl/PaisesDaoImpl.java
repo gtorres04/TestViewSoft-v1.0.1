@@ -10,8 +10,6 @@ import com.testviewsoft.entity.Paises;
 import com.testviewsoft.entity.UsuariosPaises;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -107,7 +105,7 @@ public class PaisesDaoImpl extends DaoImpl<Paises> {
         
     }
     /**
-     * Metodo buscarTodosEstadoTRUE().
+     * Metodo buscarActivos().
      * Consulta en la base de datos los Paises que estan activos, es decir, los que en la base de datos
      * se enceuntren en un estado TRUE o 1.
      * @return List<Paises>, una lista de los paises que se encuentran activos, es decir,
