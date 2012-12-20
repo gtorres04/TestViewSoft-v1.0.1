@@ -22,16 +22,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author GerlinOrlandoTorresSaavedra
+ * Entidad Pais Relacionada con la Tabla PAIS Utilizando JPA.
+ * 
+ * @author Gerlin Orlando Torres Saavedra
  */
 @Entity
 @Table(name = "paises")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Paises.findAll", query = "SELECT p FROM Paises p")})
 public class Paises implements Serializable {
@@ -98,7 +96,6 @@ public class Paises implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    @XmlTransient
     public List<UsuariosPaises> getUsuariosPaisesList() {
         return usuariosPaisesList;
     }
@@ -129,7 +126,9 @@ public class Paises implements Serializable {
 
     @Override
     public String toString() {
-        return "com.testviewsoft.entity.Paises[ id=" + id + " ]";
+        return "Paises{" + "id=" + id + ", nombre=" + nombre + ", estado=" + estado + ", tiempoEstado=" + tiempoEstado + ", usuariosPaisesList=" + usuariosPaisesList + '}';
     }
+
+    
     
 }

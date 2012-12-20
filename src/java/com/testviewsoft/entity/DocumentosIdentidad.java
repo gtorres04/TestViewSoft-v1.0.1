@@ -21,16 +21,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author GerlinOrlandoTorresSaavedra
+ * Entidad DocumentosIdentidad Relacionada con la Tabla DOCUMENTOSIDENTIDAD Utilizando JPA.
+ * 
+ * @author Gerlin Orlando Torres Saavedra
  */
 @Entity
 @Table(name = "documentos_identidad")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DocumentosIdentidad.findAll", query = "SELECT d FROM DocumentosIdentidad d")})
 public class DocumentosIdentidad implements Serializable {
@@ -90,7 +88,6 @@ public class DocumentosIdentidad implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    @XmlTransient
     public List<Usuarios> getUsuariosList() {
         return usuariosList;
     }

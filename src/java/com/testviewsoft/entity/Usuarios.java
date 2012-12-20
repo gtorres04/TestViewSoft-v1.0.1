@@ -24,16 +24,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author GerlinOrlandoTorresSaavedra
+ * Entidad Usuarios Relacionada con la Tabla USUARIOS Utilizando JPA.
+ * 
+ * @author Gerlin Orlando Torres Saavedra
  */
 @Entity
 @Table(name = "usuarios")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")})
 public class Usuarios implements Serializable {
@@ -168,7 +166,6 @@ public class Usuarios implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    @XmlTransient
     public List<UsuariosPaises> getUsuariosPaisesList() {
         return usuariosPaisesList;
     }
