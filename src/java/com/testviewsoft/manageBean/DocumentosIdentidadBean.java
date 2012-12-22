@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.testviewsoft.bean;
+package com.testviewsoft.manageBean;
 
 import com.testviewsoft.dao.DaoImpl;
 import com.testviewsoft.dao.impl.DocumentosIdentidadDaoImpl;
@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
  * 2. Listado.
  * 3. Modificacion.
  * 5. Eliminacion.
- * @author Gerlin Orlando Torres Saavedra
+ * @author Gerlin Orlando Torres Saavedra.
  */
 @ManagedBean
 @RequestScoped
@@ -34,7 +34,8 @@ public class DocumentosIdentidadBean {
      * Constructor DocumentosIdentidadBeanBean (Vacio).
      * Se crea una instancia del ManageBean y se crea un objeto de Tipo DocumentosIdentidadBean, 
      * el cual tiene como objetivo, recibir y devolver los valores de la vista. 
-     * Ademas inicializa la lista de los DocumentosIdentidadBean que se han registrado hasta el momento
+     * Ademas inicializa la lista de los DocumentosIdentidadBean que se han registrado hasta el momento.
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public DocumentosIdentidadBean() {
         Log("se crea un objeto DocumentosIdentidadBeanbean");
@@ -51,8 +52,9 @@ public class DocumentosIdentidadBean {
     }
     /**
      * Metodo getDocumentosIdentidad().
-     * Trae de la base de datos los paises que se encuentran almacenados
-     * @return Una lista Vacia si no hay ningun DocumentosIdentidad registrado en la base de datos
+     * Trae de la base de datos los documentos de Identidad que se encuentran almacenados
+     * @return Una lista Vacia si no hay ningun DocumentosIdentidad registrado en la base de datos.
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public List<DocumentosIdentidad> getDocumentosIdentidades() {
         DocumentosIdentidadDaoImpl documentosIdentidadDao=new DocumentosIdentidadDaoImpl();
@@ -63,6 +65,7 @@ public class DocumentosIdentidadBean {
      * Metodo insertar().
      * Toma la instancia "entidad" (Global) y la envia para su registro,
      * Y la respuesta del proceso de registro la envia a la vista en un FaceMessage.
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public void insertar(){
         Log("METODO INSERTAR DOCUMENTOS IDENTIDAD");
@@ -76,7 +79,8 @@ public class DocumentosIdentidadBean {
      * Toma la instancia "entidad" (Global), seteada por el metodo @see prepararActualizacion(Integer id), 
      * y la envia para su modificacion, la respuesta del proceso de modificacion la envia a la vista 
      * en un FaceMessage.
-     * @see prepararActualizacion(Integer id)
+     * @see prepararActualizacion(Integer id).
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public void actualizar(){
         Log("METODO ACTUALIZAR DOCUMENTOS IDENTIDAD");
@@ -92,6 +96,7 @@ public class DocumentosIdentidadBean {
      * para que cuando se llame el metodo @see actualizar() el objeto tenga sus valores modificados.
      * @see actualizar() modifica el objeto DocumentosIdentidad.
      * @param id identificados del DocumentosIdentidad a Modificar.
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public void prepararActualizacion(Integer id){
         Log("METODO PREPARAR ACTUALIZACION DEL DocumentosIdentidad");
@@ -104,15 +109,15 @@ public class DocumentosIdentidadBean {
      * y la envia para su Eliminacion, la respuesta del proceso de eliminacion la envia a la vista 
      * en un FaceMessage. Hay que recalcar que la eliminicion literalmente no se realiza, solo se le 
      * cambia el estado al registro, pero la informacion sigue en la base de datos para futuras inconsistencias.
-     * @see prepararEliminacion(Integer id)
+     * @see prepararEliminacion(Integer id).
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public void eliminar(){
         Log("METODO ELIMINAR DocumentosIdentidad");
         DocumentosIdentidadDaoImpl daoImpl=new DocumentosIdentidadDaoImpl();
         String mensaje=daoImpl.inactivarRegistro(entidad);
         FacesContext context = FacesContext.getCurrentInstance(); 
-        context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ELIMINACION DE PAIS",mensaje));
-
+        context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ELIMINACION DE DOCUMENTO DE IDENTIDAD",mensaje));
     }
     /**
      * Metodo prepararEliminacion(Integer id).
@@ -122,9 +127,10 @@ public class DocumentosIdentidadBean {
      * completos para su eliminacion.
      * @see eliminar() modifica el objeto DocumentosIdentidad.
      * @param id identificados del DocumentosIdentidad a Modificar.
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public void prepararEliminacion(Integer id){
-        Log("METODO PREPARAR ELIMINACION DEL PAIS");
+        Log("METODO PREPARAR ELIMINACION DEL DOCUMENTO DE IDENTIDAD");
         DocumentosIdentidadDaoImpl daoImpl=new DocumentosIdentidadDaoImpl();
         entidad=daoImpl.buscarPorId(id);
     }
@@ -133,6 +139,7 @@ public class DocumentosIdentidadBean {
      * Tiene como objetivo imprimir banderas durante la ejecucion del programa y lo imprime como si fuera 
      * un WARNING, para resaltarse.
      * @param msn de tipo String, Cadena a imprimir.
+     * @author Gerlin Orlando Torres Saavedra.
      */
     public void Log(String msn){
         Logger.getLogger(getClass().getName()).log(Level.WARNING, "<<<<[[[["+msn.toUpperCase()+"]]]]>>>>");
