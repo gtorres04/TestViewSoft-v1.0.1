@@ -4,12 +4,12 @@
  */
 package com.testviewsoft.dao.impl;
 
-import com.testviewsoft.dao.Dao;
 import com.testviewsoft.dao.DaoImpl;
 import com.testviewsoft.dao.util.Utileria;
 import com.testviewsoft.entity.DocumentosIdentidad;
 import com.testviewsoft.entity.Paises;
 import com.testviewsoft.entity.Usuarios;
+import com.testviewsoft.entity.UsuariosPaises;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +28,7 @@ import javax.persistence.EntityManagerFactory;
  * @author Gerlin Orlando Torres Saavedra.
  */
 public class UsuariosDaoImpl extends DaoImpl<Usuarios> {
-    EntityManagerFactory emf;
+    private EntityManagerFactory emf;
     /**
      * Constructor UsuariosDaoImpl() (Vacio).
      * Se llama la instancia del EntityManagerFactory, y se le envia al contructor de la clase padre, 
@@ -55,7 +55,7 @@ public class UsuariosDaoImpl extends DaoImpl<Usuarios> {
     }
     /**
      * Metodo registrar(Usuarios entidad). @Override
-     * Registra el Usuario en la base de datos.
+     * Registra el Usuario en la base de datos y se le modifica el atributo tiempo a DocumentosIdentificacion.
      * @param entidad referencia de tipo "Usuarios". Usuario que se intenta registrar en la base de datos.
      * @return String, una cadena donde se le expecifica el mensaje de exito o fracaso que se obtuvo del registro.
      * @see Usuarios ENTITY: Comprendase como entidad (entity) la relacion de los atributos de esta clase con los campos de una tabla en una Base de Datos.
@@ -63,9 +63,23 @@ public class UsuariosDaoImpl extends DaoImpl<Usuarios> {
      */
     @Override
     public String registrar(Usuarios entidad) {
-        entidad.setTiempoEstado(new Date());
-        entidad.setEstado(Boolean.TRUE);
-        return super.registrar(entidad);
+        try {
+            Date tiempo=new Date();
+            List<UsuariosPaises> usuariosPaisesList=entidad.getUsuariosPaisesList();
+            if(!usuariosPaisesList.isEmpty())
+            for (int i = 0; i < usuariosPaisesList.size(); i++) {
+                UsuariosPaises usuarioPais = usuariosPaisesList.get(i);
+                usuarioPais.setUsuariosId(entidad);
+                usuarioPais.setEstado(Boolean.TRUE);
+                usuarioPais.setTiempoEstado(tiempo);
+            }
+            entidad.setTiempoEstado(tiempo);
+            entidad.setEstado(Boolean.TRUE);
+            return super.registrar(entidad);
+        } catch (Exception ex) {
+            System.out.println("ERROR DESCONOCIDO CONSULTE CON EL SOPORTE TECNICO DE SU PROVEEDOR. Error al Modificar ["+entidad.toString()+"]==>"+ex.getMessage());
+            return "ERROR DESCONOCIDO CONSULTE CON EL SOPORTE TECNICO DE SU PROVEEDOR. Error al Modificar ["+entidad.toString()+"]==>"+ex.getMessage();
+        }
     }
     /**
      * Metodo actualizar(Usuarios entidad). @Override
@@ -78,8 +92,17 @@ public class UsuariosDaoImpl extends DaoImpl<Usuarios> {
     @Override
     public String actualizar(Usuarios entidad){
         try {
+            Date tiempo=new Date();
+            List<UsuariosPaises> usuariosPaisesList=entidad.getUsuariosPaisesList();
+            if(!usuariosPaisesList.isEmpty())
+            for (int i = 0; i < usuariosPaisesList.size(); i++) {
+                UsuariosPaises usuarioPais = usuariosPaisesList.get(i);
+                usuarioPais.setUsuariosId(entidad);
+                usuarioPais.setEstado(Boolean.TRUE);
+                usuarioPais.setTiempoEstado(tiempo);
+            }
             entidad.setEstado(Boolean.TRUE);
-            entidad.setTiempoEstado(new Date());
+            entidad.setTiempoEstado(tiempo);
             return super.actualizar(entidad); 
         } catch (Exception ex) {
             System.out.println("ERROR DESCONOCIDO CONSULTE CON EL SOPORTE TECNICO DE SU PROVEEDOR. Error al Modificar ["+entidad.toString()+"]==>"+ex.getMessage());
@@ -159,7 +182,7 @@ public class UsuariosDaoImpl extends DaoImpl<Usuarios> {
         List<DocumentosIdentidad> listaEntidades=daoImpl.buscarActivos();
         if(!listaEntidades.isEmpty())
         for (int i = 0; i < listaEntidades.size(); i++) {
-            DocumentosIdentidad entidad=listaEntidades.get(i);
+            DocumentosIdentidad entidad=(DocumentosIdentidad)listaEntidades.get(i);
             listaSelectItem.add(new SelectItem(""+entidad.getId(), entidad.getNombre()));
         }
         return listaSelectItem;

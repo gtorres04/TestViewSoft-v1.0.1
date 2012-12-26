@@ -4,9 +4,12 @@
  */
 package com.testviewsoft.manageBean;
 
+import com.testviewsoft.dao.impl.DocumentosIdentidadDaoImpl;
+import com.testviewsoft.dao.impl.PaisesDaoImpl;
 import com.testviewsoft.dao.impl.UsuariosDaoImpl;
 import com.testviewsoft.dao.impl.UsuariosPaisesDaoImpl;
 import com.testviewsoft.entity.DocumentosIdentidad;
+import com.testviewsoft.entity.Paises;
 import com.testviewsoft.entity.Usuarios;
 import com.testviewsoft.entity.UsuariosPaises;
 import java.io.Serializable;
@@ -16,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -37,10 +39,8 @@ import javax.faces.model.SelectItem;
 public class UsuariosPaisesBean implements Serializable{
     private UsuariosPaises entidad;
     private List<UsuariosPaises> entidades;
-    private List<UsuariosPaises> usuariosPaisesEliminados;
     private String idDocumentoIdentificacion;
     private String idPais;
-    private String idUsuario;
     private Usuarios usuarios;
     /**
      * Constructor UsuariosPaisesBean() (Vacio).
@@ -49,9 +49,7 @@ public class UsuariosPaisesBean implements Serializable{
      * @author Gerlin Orlando Torres Saavedra.
      */
     public UsuariosPaisesBean() {
-        Log("se crea un objeto usuariosbean");
-        entidad=new UsuariosPaises();
-        getUsuariosPaises();
+        inicializar();
     }
 
     public UsuariosPaises getUsuarioPais() {
@@ -61,7 +59,7 @@ public class UsuariosPaisesBean implements Serializable{
     public void setUsuarioPais(UsuariosPaises entidad) {
         this.entidad = entidad;
     }
-
+    
     public String getIdDocumentoIdentificacion() {
         return idDocumentoIdentificacion;
     }
@@ -76,14 +74,11 @@ public class UsuariosPaisesBean implements Serializable{
 
     public void setIdPais(String idPais) {
         this.idPais = idPais;
-    }
-    
-    public String getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+        PaisesDaoImpl daoImpl=new PaisesDaoImpl();
+        Paises pais=daoImpl.buscarPorId(Integer.parseInt(idPais));
+        Log("PAIS SELECCIONADO-->"+pais.getNombre());
+        this.entidad.setPaisesId(pais);
+        this.idPais=null;
     }
 
     public Usuarios getUsuarios() {
@@ -101,8 +96,6 @@ public class UsuariosPaisesBean implements Serializable{
      * @author Gerlin Orlando Torres Saavedra.
      */
     public List<UsuariosPaises> getUsuariosPaises() {
-        UsuariosPaisesDaoImpl daoImpl=new UsuariosPaisesDaoImpl();
-        entidades=daoImpl.buscarActivos();
         return entidades;
     }
     /**
@@ -113,9 +106,13 @@ public class UsuariosPaisesBean implements Serializable{
      * @author Gerlin Orlando Torres Saavedra.
      */
     public void insertar(){
-        Log("METODO INSERTAR Usuarios");
-        UsuariosPaisesDaoImpl daoImpl=new UsuariosPaisesDaoImpl();
-        String mensaje=daoImpl.registrar(entidad);
+        DocumentosIdentidadDaoImpl documentoIdentidadDaoImpl=new DocumentosIdentidadDaoImpl();
+        DocumentosIdentidad documentoIdentidad=documentoIdentidadDaoImpl.buscarPorId(Integer.parseInt(this.idDocumentoIdentificacion));
+        UsuariosDaoImpl usuarioDaoImpl=new UsuariosDaoImpl();
+        usuarios.setTipoIdentificacion(documentoIdentidad);
+        usuarios.setUsuariosPaisesList(entidades);
+        String mensaje=usuarioDaoImpl.registrar(usuarios);
+        inicializar();
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("REGISTRO DE UsuariosPaises",mensaje)); 
     }
@@ -129,16 +126,20 @@ public class UsuariosPaisesBean implements Serializable{
      * @author Gerlin Orlando Torres Saavedra.
      */
     public void actualizar(){
-        Log("METODO ACTUALIZAR UsuariosPaises");
-        UsuariosPaisesDaoImpl daoImpl=new UsuariosPaisesDaoImpl();
-        String mensaje=daoImpl.actualizar(entidad);
+        DocumentosIdentidadDaoImpl documentoIdentidadDaoImpl=new DocumentosIdentidadDaoImpl();
+        DocumentosIdentidad documentoIdentidad=documentoIdentidadDaoImpl.buscarPorId(Integer.parseInt(this.idDocumentoIdentificacion));
+        UsuariosDaoImpl daoImpl=new UsuariosDaoImpl();
+        usuarios.setTipoIdentificacion(documentoIdentidad);
+        usuarios.setUsuariosPaisesList(entidades);
+        String mensaje=daoImpl.actualizar(usuarios);
+        inicializar();
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ACTUALIZACION DE USUARIO PAISES",mensaje));        
     }
     /**
      * Metodo prepararActualizacion(Integer id).
-     * Recibe el Id (Llave Primaria) de la relacion usuario-paises a modificar y lo consulta frente a la base de datos 
-     * obteniendo el objeto de tipo "UsuariosPaises" completo (variable entidad [Global]), para posteriormente asignarlo a la variable "entidad" (Global), 
+     * Recibe el Id (Llave Primaria) del usuario a modificar y lo consulta frente a la base de datos 
+     * obteniendo el objeto de tipo "Usuarios" completo (variable usuarios [Global]), para posteriormente asignarlo a la variable "entidad" (Global), 
      * para que cuando se llame el metodo actualizar() el objeto tenga sus valores modificados.
      * @see UsuariosPaises Entity[UsuariosPaises]: Comprendase como entidad (entity) la relacion de los atributos de esta clase con los campos de una tabla en una Base de Datos.
      * @see actualizar() modifica el objeto UsuariosPaises.
@@ -147,8 +148,11 @@ public class UsuariosPaisesBean implements Serializable{
      */
     public void prepararActualizacion(Integer id){
         Log("METODO PREPARAR ACTUALIZACION DEL UsuariosPaises");
-        UsuariosPaisesDaoImpl daoImpl=new UsuariosPaisesDaoImpl();
-        entidad=daoImpl.buscarPorId(id);
+        UsuariosDaoImpl daoImpl=new UsuariosDaoImpl();
+        usuarios=daoImpl.buscarPorId(id);
+        idDocumentoIdentificacion=""+usuarios.getTipoIdentificacion().getId();
+        entidades=usuarios.getUsuariosPaisesList();
+        System.out.println("");
     }
     /**
      * Metodo eliminar().
@@ -162,11 +166,10 @@ public class UsuariosPaisesBean implements Serializable{
      */
     public void eliminar(){
         Log("METODO ELIMINAR UsuariosPaises");
-        UsuariosPaisesDaoImpl daoImpl=new UsuariosPaisesDaoImpl();
-        String mensaje=daoImpl.inactivarRegistro(entidad);
+        UsuariosDaoImpl daoImpl=new UsuariosDaoImpl();
+        String mensaje=daoImpl.inactivarRegistro(usuarios);
         FacesContext context = FacesContext.getCurrentInstance(); 
-        context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ELIMINACION DE USUARIOS-PAISES",mensaje));
-
+        context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ELIMINACION DE USUARIOS",mensaje));
     }
     /**
      * Metodo prepararEliminacion(Integer id).
@@ -180,8 +183,8 @@ public class UsuariosPaisesBean implements Serializable{
      */
     public void prepararEliminacion(Integer id){
         Log("METODO PREPARAR ELIMINACION DEL USUARIO-PAIS");
-        UsuariosPaisesDaoImpl daoImpl=new UsuariosPaisesDaoImpl();
-        entidad=daoImpl.buscarPorId(id);
+        UsuariosDaoImpl daoImpl=new UsuariosDaoImpl();
+        usuarios=daoImpl.buscarPorId(id);
     }
     /**
      * Metodo listaSelectItemPaisesActivos().
@@ -195,7 +198,19 @@ public class UsuariosPaisesBean implements Serializable{
      */
     public List<SelectItem> listaSelectItemPaisesActivos(){
         UsuariosDaoImpl daoImpl=new UsuariosDaoImpl();
-        return daoImpl.listaSelectItemPaisesActivos();
+        List<SelectItem> listaItems= daoImpl.listaSelectItemPaisesActivos();
+        if (!entidades.isEmpty())
+        for (int i = 0; i < entidades.size(); i++) {
+            for (int j = 0; j < listaItems.size(); j++) {
+                SelectItem selectItem = listaItems.get(j);
+                String idPaisString=(String)listaItems.get(j).getValue();
+                int paisId=Integer.parseInt(idPaisString);
+                int paisIdSeleccionado=entidades.get(i).getPaisesId().getId().intValue();
+                if(paisIdSeleccionado==paisId)
+                    listaItems.remove(j);
+            }
+        }
+        return listaItems;
     }
     /**
      * Metodo Log(String msn).
@@ -215,7 +230,6 @@ public class UsuariosPaisesBean implements Serializable{
     private void inicializar(){
         Log("Se INICIALIZARON LOS VALORES");
         idDocumentoIdentificacion=null;
-        usuariosPaisesEliminados=new ArrayList<UsuariosPaises>();
         entidad=new UsuariosPaises();
         entidad.setUsuariosId(new Usuarios());
         entidades=new ArrayList<UsuariosPaises>();
@@ -240,6 +254,22 @@ public class UsuariosPaisesBean implements Serializable{
         Usuarios usuario=entidad.getUsuariosId();
         entidad=new UsuariosPaises();
         entidad.setUsuariosId(usuario);
+    }
+    /**
+     * Metodo eliminarPaisesRelacionadosAlUsuario().
+     * Este metodo elimina la relacion del pais seleccionado con el Usuario en gestion.
+     * @param id Identificacion del pais que se intenta eliminar de la relacion con el usuario en gestion.
+     * @author Gerlin Orlando Torres Saavedra
+     */
+    public void eliminarPaisesRelacionadosAlUsuario(Integer id){
+        if(!entidades.isEmpty())
+        for (int i = 0; i < entidades.size(); i++) {
+            UsuariosPaises usuariosPaises = entidades.get(i);
+            if(usuariosPaises.getPaisesId().getId().equals(id)){
+                entidades.remove(i);
+                break;
+            }
+        }
     }
 }
 

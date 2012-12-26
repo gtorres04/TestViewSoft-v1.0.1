@@ -4,12 +4,9 @@
  */
 package com.testviewsoft.dao.impl;
 
-import com.testviewsoft.dao.Dao;
 import com.testviewsoft.dao.DaoImpl;
 import com.testviewsoft.dao.util.Utileria;
-import com.testviewsoft.entity.DocumentosIdentidad;
 import com.testviewsoft.entity.Paises;
-import com.testviewsoft.entity.Usuarios;
 import com.testviewsoft.entity.UsuariosPaises;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,9 +62,14 @@ public class UsuariosPaisesDaoImpl extends DaoImpl<UsuariosPaises> {
      */
     @Override
     public String registrar(UsuariosPaises entidad) {
-        entidad.setTiempoEstado(new Date());
-        entidad.setEstado(Boolean.TRUE);
-        return super.registrar(entidad);
+        try {
+            entidad.setTiempoEstado(new Date());
+            entidad.setEstado(Boolean.TRUE);
+            return super.registrar(entidad);
+        } catch (Exception ex) {
+            System.out.println("ERROR DESCONOCIDO CONSULTE CON EL SOPORTE TECNICO DE SU PROVEEDOR. Error al Registrar ["+entidad.toString()+"]==>"+ex.getMessage());
+            return "ERROR DESCONOCIDO CONSULTE CON EL SOPORTE TECNICO DE SU PROVEEDOR. Error al Registrar ["+entidad.toString()+"]==>"+ex.getMessage();
+        }
     }
     /**
      * Metodo actualizar(UsuariosPaises entidad). @Override
