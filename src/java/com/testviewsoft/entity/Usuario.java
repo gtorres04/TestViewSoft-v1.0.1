@@ -16,34 +16,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Entidad Usuarios Relacionada con la Tabla USUARIOS Utilizando JPA.
- * 
- * @author Gerlin Orlando Torres Saavedra
+ *
+ * @author GerlinOrlandoTorresSaavedra
  */
 @Entity
-@Table(name = "usuarios")
-@NamedQueries({
-    @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")})
-public class Usuarios implements Serializable {
+@Table(name = "usuario")
+public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "referencia_identificacion")
     private String referenciaIdentificacion;
     @Size(max = 255)
@@ -61,29 +53,24 @@ public class Usuarios implements Serializable {
     @Size(max = 255)
     @Column(name = "mail")
     private String mail;
-    @Column(name = "nacionalidad")
-    private Integer nacionalidad;
     @Column(name = "estado")
     private Boolean estado;
     @Column(name = "tiempo_estado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tiempoEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuariosId")
-    private List<UsuariosPaises> usuariosPaisesList;
-    @JoinColumn(name = "tipo_identificacion", referencedColumnName = "id")
+    @JoinColumn(name = "documento_identidad_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private DocumentosIdentidad tipoIdentificacion;
+    private DocumentoIdentidad documentoIdentidadId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private List<UsuarioPais> usuarioPaisList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
+    private List<Cuenta> cuentaList;
 
-    public Usuarios() {
+    public Usuario() {
     }
 
-    public Usuarios(Integer id) {
+    public Usuario(Integer id) {
         this.id = id;
-    }
-
-    public Usuarios(Integer id, String referenciaIdentificacion) {
-        this.id = id;
-        this.referenciaIdentificacion = referenciaIdentificacion;
     }
 
     public Integer getId() {
@@ -142,14 +129,6 @@ public class Usuarios implements Serializable {
         this.mail = mail;
     }
 
-    public Integer getNacionalidad() {
-        return nacionalidad;
-    }
-
-    public void setNacionalidad(Integer nacionalidad) {
-        this.nacionalidad = nacionalidad;
-    }
-
     public Boolean getEstado() {
         return estado;
     }
@@ -166,20 +145,28 @@ public class Usuarios implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    public List<UsuariosPaises> getUsuariosPaisesList() {
-        return usuariosPaisesList;
+    public DocumentoIdentidad getDocumentoIdentidadId() {
+        return documentoIdentidadId;
     }
 
-    public void setUsuariosPaisesList(List<UsuariosPaises> usuariosPaisesList) {
-        this.usuariosPaisesList = usuariosPaisesList;
+    public void setDocumentoIdentidadId(DocumentoIdentidad documentoIdentidadId) {
+        this.documentoIdentidadId = documentoIdentidadId;
     }
 
-    public DocumentosIdentidad getTipoIdentificacion() {
-        return tipoIdentificacion;
+    public List<UsuarioPais> getUsuarioPaisList() {
+        return usuarioPaisList;
     }
 
-    public void setTipoIdentificacion(DocumentosIdentidad tipoIdentificacion) {
-        this.tipoIdentificacion = tipoIdentificacion;
+    public void setUsuarioPaisList(List<UsuarioPais> usuarioPaisList) {
+        this.usuarioPaisList = usuarioPaisList;
+    }
+
+    public List<Cuenta> getCuentaList() {
+        return cuentaList;
+    }
+
+    public void setCuentaList(List<Cuenta> cuentaList) {
+        this.cuentaList = cuentaList;
     }
 
     @Override
@@ -192,10 +179,10 @@ public class Usuarios implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuarios)) {
+        if (!(object instanceof Usuario)) {
             return false;
         }
-        Usuarios other = (Usuarios) object;
+        Usuario other = (Usuario) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -204,7 +191,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.testviewsoft.entity.Usuarios[ id=" + id + " ]";
+        return "com.testviewsoft.entity.Usuario[ id=" + id + " ]";
     }
     
 }

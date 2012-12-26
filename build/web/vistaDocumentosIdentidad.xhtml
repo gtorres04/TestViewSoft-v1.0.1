@@ -42,7 +42,7 @@
                     <p:growl life="3000" for="grwForMensajeConfirmacion" id="grwIdMensajeConfirmacion" showDetail="true"/>
                     <!--LISTADO DE LOS DOCUMENTOS DE IDENTIDAD-->
                     <h:form id="frmIdlistaDocumentosIdentidad">
-                        <p:dataTable var="documentoIdentidad" onExpandStart="#{documentosIdentidadBean.documentosIdentidades}" value="#{documentosIdentidadBean.documentosIdentidades}" emptyMessage="No Documentos de Identidad." paginator="true" rows="15"  
+                        <p:dataTable var="documentoIdentidad" onExpandStart="#{documentoIdentidadBean.documentoIdentidades}" value="#{documentoIdentidadBean.documentoIdentidades}" emptyMessage="No Documentos de Identidad." paginator="true" rows="15"  
                              paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                              rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">  
 
@@ -54,8 +54,8 @@
                             </p:column>  
 
                             <p:column style="width:12%; text-align: center" headerText="Opciones">  
-                                <p:commandButton oncomplete="dlgWgvEditarDocumentoIdentidad.show()" update=":frmIdEditarDocumentoIdentidad:dlgIdEditarDocumentoIdentidad" action="#{documentosIdentidadBean.prepararActualizacion(documentoIdentidad.id)}" icon="iconedit" title="Editar"/>
-                                <p:commandButton oncomplete="confDlgWgvConfirmarEliminar.show()" update=":frmIdCofirmarEliminar" action="#{documentosIdentidadBean.prepararEliminacion(documentoIdentidad.id)}" icon="icondelete" title="Eliminar"/>    
+                                <p:commandButton oncomplete="dlgWgvEditarDocumentoIdentidad.show()" update=":frmIdEditarDocumentoIdentidad:dlgIdEditarDocumentoIdentidad" action="#{documentoIdentidadBean.prepararActualizacion(documentoIdentidad.id)}" icon="iconedit" title="Editar"/>
+                                <p:commandButton oncomplete="confDlgWgvConfirmarEliminar.show()" update=":frmIdCofirmarEliminar" action="#{documentoIdentidadBean.prepararEliminacion(documentoIdentidad.id)}" icon="icondelete" title="Eliminar"/>    
                             </p:column>
 
                         </p:dataTable>
@@ -67,23 +67,23 @@
                 <p:dialog header="Registrar Documentos de Identidad" widgetVar="dlgWgvNuevoDocumentoIdentidad" resizable="false" id="dlgIdNuevoDocumentoIdentidad" modal="true">  
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">        
                         <h:outputText value="Nombre:" /> 
-                        <p:inputText required="true" id="inpTxtIdNombreDocumentoIdentidad" value="#{documentosIdentidadBean.documentosIdentidad.nombre}" style="width:200px"/>  
+                        <p:inputText required="true" id="inpTxtIdNombreDocumentoIdentidad" value="#{documentoIdentidadBean.documentoIdentidad.nombre}" style="width:200px"/>  
                     </h:panelGrid>  
                     <p:separator/>
-                    <p:commandButton value="&nbsp;Guardar" update=":grwIdMensajeConfirmacion :frmIdlistaDocumentosIdentidad frmIdNuevoDocumentoIdentidad" action="#{documentosIdentidadBean.insertar()}" oncomplete="handleLoginRequest(xhr, status, args,1)" icon="iconsave" title="Guardar"/>
+                    <p:commandButton value="&nbsp;Guardar" update=":grwIdMensajeConfirmacion :frmIdlistaDocumentosIdentidad frmIdNuevoDocumentoIdentidad" action="#{documentoIdentidadBean.insertar()}" oncomplete="handleLoginRequest(xhr, status, args,1)" icon="iconsave" title="Guardar"/>
                     <p:commandButton value="&nbsp;Cancelar" update=":frmIdlistaDocumentosIdentidad" oncomplete="dlgWgvNuevoDocumentoIdentidad.hide()" icon="iconcancel" title="Cancel"/>
                 </p:dialog>
             </h:form>
             <!--FORMULARIO MODIFICAR DOCUMENTO DE IDENTIDAD-->
             <h:form id="frmIdEditarDocumentoIdentidad">
                 <p:dialog header="Actualizar Documentos de Identidad" widgetVar="dlgWgvEditarDocumentoIdentidad" resizable="false" id="dlgIdEditarDocumentoIdentidad" modal="true">  
-                    <h:inputHidden value="#{documentosIdentidadBean.documentosIdentidad.id}"/>
+                    <h:inputHidden value="#{documentoIdentidadBean.documentoIdentidad.id}"/>
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
                         <h:outputText value="Nombre:" /> 
-                        <p:inputText required="true" id="inpTxtIdNombreDocumentoIdentidadEditar" value="#{documentosIdentidadBean.documentosIdentidad.nombre}" style="width:200px"/>  
+                        <p:inputText required="true" id="inpTxtIdNombreDocumentoIdentidadEditar" value="#{documentoIdentidadBean.documentoIdentidad.nombre}" style="width:200px"/>  
                     </h:panelGrid>  
                     <p:separator/>
-                    <p:commandButton value="&nbsp;Guardar" update=":grwIdMensajeConfirmacion :frmIdlistaDocumentosIdentidad frmIdEditarDocumentoIdentidad" action="#{documentosIdentidadBean.actualizar()}" oncomplete="handleLoginRequest(xhr, status, args,2)" icon="iconsave" title="Guardar"/>
+                    <p:commandButton value="&nbsp;Guardar" update=":grwIdMensajeConfirmacion :frmIdlistaDocumentosIdentidad frmIdEditarDocumentoIdentidad" action="#{documentoIdentidadBean.actualizar()}" oncomplete="handleLoginRequest(xhr, status, args,2)" icon="iconsave" title="Guardar"/>
                     <p:commandButton value="&nbsp;Cancelar" update=":frmIdlistaDocumentosIdentidad" oncomplete="dlgWgvEditarDocumentoIdentidad.hide()" icon="iconcancel" title="Cancel"/>
 
                 </p:dialog>
@@ -91,12 +91,12 @@
             <!-- vista Confirmar Eliminacion-->
             <h:form id="frmIdCofirmarEliminar">
                 <p:confirmDialog header="Eliminar Documento de Identidad" severity="alert" widgetVar="confDlgWgvConfirmarEliminar">
-                    <h:inputHidden value="#{documentosIdentidadBean.documentosIdentidad.id}"/>
-                    <h:inputHidden value="#{documentosIdentidadBean.documentosIdentidad.nombre}"/>
+                    <h:inputHidden value="#{documentoIdentidadBean.documentoIdentidad.id}"/>
+                    <h:inputHidden value="#{documentoIdentidadBean.documentoIdentidad.nombre}"/>
                     <f:facet name="message">
-                        <h:outputText value="Confirme Eliminar el Documento de Identidad [ #{documentosIdentidadBean.documentosIdentidad.nombre} ]"/>
+                        <h:outputText value="Confirme Eliminar el Documento de Identidad [ #{documentoIdentidadBean.documentoIdentidad.nombre} ]"/>
                     </f:facet>
-                    <p:commandButton value="Aceptar" action="#{documentosIdentidadBean.eliminar()}" update=":frmIdlistaDocumentosIdentidad :grwIdMensajeConfirmacion" oncomplete="confDlgWgvConfirmarEliminar.hide()" icon="iconaccept"/>
+                    <p:commandButton value="Aceptar" action="#{documentoIdentidadBean.eliminar()}" update=":frmIdlistaDocumentosIdentidad :grwIdMensajeConfirmacion" oncomplete="confDlgWgvConfirmarEliminar.hide()" icon="iconaccept"/>
                     <p:commandButton value="Cancelar" onclick="confDlgWgvConfirmarEliminar.hide();" type="button" icon="iconcancel"/>
                 </p:confirmDialog>
             </h:form>

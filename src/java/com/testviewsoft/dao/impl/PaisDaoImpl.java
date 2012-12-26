@@ -6,8 +6,8 @@ package com.testviewsoft.dao.impl;
 
 import com.testviewsoft.dao.DaoImpl;
 import com.testviewsoft.dao.util.Utileria;
-import com.testviewsoft.entity.Paises;
-import com.testviewsoft.entity.UsuariosPaises;
+import com.testviewsoft.entity.Pais;
+import com.testviewsoft.entity.UsuarioPais;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,9 +15,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 /**
- * Clase PaisesDaoImpl: Clase Modelo de la Entidad Paises.
- * En este Clase Modelo se intermedia el ManageBean "PaisesBean" con toda la logica de negocio 
- * correspondiente a la entidad "Paises". Esta clase hereda de la Clase Generica "@see DaoImp<T>"
+ * Clase PaisDaoImpl: Clase Modelo de la Entidad Pais.
+ * En este Clase Modelo se intermedia el ManageBean "PaisBean" con toda la logica de negocio 
+ * correspondiente a la entidad "Pais". Esta clase hereda de la Clase Generica "@see DaoImp<T>"
  * 1. Registro.
  * 2. Listado.
  * 3. Modificacion.
@@ -26,50 +26,50 @@ import javax.persistence.Query;
  * @author Gerlin Orlando Torres Saavedra
  * @see DaoImpl Clase Generica donde se realizan los procesos que son factor comun entre las entidades.
  */
-public class PaisesDaoImpl extends DaoImpl<Paises> {
+public class PaisDaoImpl extends DaoImpl<Pais> {
     EntityManagerFactory emf;
     /**
-     * Constructor PaisesDaoImpl (Vacio).
+     * Constructor PaisDaoImpl (Vacio).
      * Se llama la instancia del @see EntityManagerFactory, y se le envia al contructor de la clase padre, 
      * ya que en ella es donde se realiza toda interaccion entre JPA y la Base de Datos. 
      * Ademas se referencia la instancia @see EntityManagerFactory en una variable global "emf".
      */
-    public PaisesDaoImpl() {
+    public PaisDaoImpl() {
         super(Utileria.getEntityManagerFactory());
         emf=Utileria.getEntityManagerFactory();
     }
     /**
      * Metodo buscarPorId(Integer id).
      * Recibe el Id del Pais a modificar y los consulta frente a la base de datos (utilizando un 
-     * metodo de la clase padre super.buscarPorId(id, "Paises")) obteniendo el objeto PAIS completo.
+     * metodo de la clase padre super.buscarPorId(id, "Pais")) obteniendo el objeto PAIS completo.
      * @param id identificados del Pais a Modificar.
-     * @return Una instancia de tipo "Paises" del "id" especificado como parametro.
+     * @return Una instancia de tipo "Pais" del "id" especificado como parametro.
      */
-    public Paises buscarPorId(Integer id) {
-        return super.buscarPorId(id, "Paises");
+    public Pais buscarPorId(Integer id) {
+        return super.buscarPorId(id, "Pais");
     }
     /**
-     * Metodo registrar(Paises entidad). @Override
+     * Metodo registrar(Pais entidad). @Override
      * Registra el Pais en la base de datos.
-     * @param entidad referencia de tipo "Paises". Pais que se intenta registrar en la base de datos.
+     * @param entidad referencia de tipo "Pais". Pais que se intenta registrar en la base de datos.
      * @return String, una cadena donde se le expecifica el mensaje de exito o fracaso que se obtuvo del registro.
      */
     @Override
-    public String registrar(Paises entidad) {
+    public String registrar(Pais entidad) {
         entidad.setTiempoEstado(new Date());
         entidad.setEstado(Boolean.TRUE);
         return super.registrar(entidad);
     }
     /**
-     * Metodo actualizar(Paises entidad). @Override
+     * Metodo actualizar(Pais entidad). @Override
      * Modifica el Pais en la base de datos.
-     * @param entidad referencia de tipo "Paises". Pais que se intenta modificar en la base de datos.
+     * @param entidad referencia de tipo "Pais". Pais que se intenta modificar en la base de datos.
      * @return String, una cadena donde se le expecifica el mensaje de exito o fracaso que se obtuvo de la modificacion.
      */
     @Override
-    public String actualizar(Paises entidad){
+    public String actualizar(Pais entidad){
         try {
-            if(buscarUsuariosPorPaisSiUsuarioPaisEstaActivo(entidad).isEmpty()){
+            if(buscarUsuarioPorPaisSiUsuarioPaisEstaActivo(entidad).isEmpty()){
                 entidad.setEstado(Boolean.TRUE);
                 entidad.setTiempoEstado(new Date());
                 return super.actualizar(entidad); 
@@ -84,15 +84,15 @@ public class PaisesDaoImpl extends DaoImpl<Paises> {
     }
 
     /**
-     * Metodo eliminar(Paises entidad). @Override
+     * Metodo eliminar(Pais entidad). @Override
      * Elimina el Pais en la base de datos.
-     * @param entidad referencia de tipo "Paises". Pais que se intenta eliminar en la base de datos.
+     * @param entidad referencia de tipo "Pais". Pais que se intenta eliminar en la base de datos.
      * @return String, una cadena donde se le expecifica el mensaje de exito o fracaso que se obtuvo de la eliminacion.
      */
     @Override
-    public String eliminar(Paises entidad) {
+    public String eliminar(Pais entidad) {
         try {
-            if(buscarUsuariosPorPaisSiUsuarioPaisEstaActivo(entidad).isEmpty()){
+            if(buscarUsuarioPorPaisSiUsuarioPaisEstaActivo(entidad).isEmpty()){
                 entidad.setEstado(Boolean.TRUE);
                 entidad.setTiempoEstado(new Date());
                 return super.eliminar(entidad); 
@@ -106,53 +106,53 @@ public class PaisesDaoImpl extends DaoImpl<Paises> {
     }
     /**
      * Metodo buscarActivos().
-     * Consulta en la base de datos los Paises que estan activos, es decir, los que en la base de datos
+     * Consulta en la base de datos los Pais que estan activos, es decir, los que en la base de datos
      * se enceuntren en un estado TRUE o 1.
-     * @return List<Paises>, una lista de los paises que se encuentran activos, es decir,
+     * @return List<Pais>, una lista de los paises que se encuentran activos, es decir,
      * que su estado es TRUE.
      */
-    public List<Paises> buscarActivos() {
-        List<Paises> listaPaisesActivas=super.buscarActivos("Paises");
-        return listaPaisesActivas;
+    public List<Pais> buscarActivos() {
+        List<Pais> listaPaisActivas=super.buscarActivos("Pais");
+        return listaPaisActivas;
     }
     /**
      * Metodo buscarTodos().
-     * Consulta en la base de datos todos los Paises, tando los activos como los inactivos, es decir, 
+     * Consulta en la base de datos todos los Pais, tando los activos como los inactivos, es decir, 
      * los que el estado sea TRUE o FALSE.
-     * @return List<Paises>, una lista de los paises que se encuentran activos e inactivos, es decir, que su estado es TRUE o FALSE.
+     * @return List<Pais>, una lista de los paises que se encuentran activos e inactivos, es decir, que su estado es TRUE o FALSE.
      */
-    public List<Paises> buscarTodos() {
-        List<Paises> listaPaisesActivas=super.buscarTodos("Paises");
-        return listaPaisesActivas;
+    public List<Pais> buscarTodos() {
+        List<Pais> listaPaisActivas=super.buscarTodos("Pais");
+        return listaPaisActivas;
     }
     /**
-     * Metodo buscarUsuariosPorPaisSiUsuarioPaisEstaActivo(Paises entidad).
-     * Consulta en la base de datos todos los Usuarios, que esten relacionado con 
+     * Metodo buscarUsuarioPorPaisSiUsuarioPaisEstaActivo(Pais entidad).
+     * Consulta en la base de datos todos los Usuario, que esten relacionado con 
      * un pais en especifico (Pais especificado como parametro)  y que su relacion este activa, es decir,
      * que su estado sea activo. 
-     * @param entidad Parametro de Tipo "Paises", cuyo pais sera el referente para buscar a los usuarios.
-     * @return List<UsuariosPaises>, una lista de los Usuarios que se encuentran activos que estan relacionados con el Pais especificado como parametro.
+     * @param entidad Parametro de Tipo "Pais", cuyo pais sera el referente para buscar a los usuarios.
+     * @return List<UsuarioPais>, una lista de los Usuario que se encuentran activos que estan relacionados con el Pais especificado como parametro.
      * @exception Exception
      * @see Exception
      */
-    public List<UsuariosPaises> buscarUsuariosPorPaisSiUsuarioPaisEstaActivo(Paises entidad)throws Exception{
+    public List<UsuarioPais> buscarUsuarioPorPaisSiUsuarioPaisEstaActivo(Pais entidad)throws Exception{
         EntityManager em;
         em=emf.createEntityManager();
-        Query q = em.createQuery("SELECT usuarioPais FROM UsuariosPaises usuarioPais WHERE usuarioPais.paisesId=:pais AND usuarioPais.estado=TRUE");
+        Query q = em.createQuery("SELECT usuarioPais FROM UsuarioPais usuarioPais WHERE usuarioPais.paisId=:pais AND usuarioPais.estado=TRUE");
         q.setParameter("pais", entidad);
         return q.getResultList();
         
     }
     /**
-     * Metodo inactivarRegistro(Paises entidad). @Override
+     * Metodo inactivarRegistro(Pais entidad). @Override
      * Le modifica el estado al pais (Inactivar) siempre y cuando este pais no se enceuntre relacionado con un usuario activo (Un usuario donde su estado es TRUE)
-     * @param entidad Parametro de Tipo "Paises", cuyo pais sera el referente para modificar el estado a FALSE.
-     * @return List<UsuariosPaises>, una lista de los Usuarios que se encuentran activos que estan relacionados con el Pais especificado como parametro.
+     * @param entidad Parametro de Tipo "Pais", cuyo pais sera el referente para modificar el estado a FALSE.
+     * @return List<UsuarioPais>, una lista de los Usuario que se encuentran activos que estan relacionados con el Pais especificado como parametro.
      */
     @Override
-    public String inactivarRegistro(Paises entidad) {
+    public String inactivarRegistro(Pais entidad) {
         try {
-            if(buscarUsuariosPorPaisSiUsuarioPaisEstaActivo(entidad).isEmpty()){
+            if(buscarUsuarioPorPaisSiUsuarioPaisEstaActivo(entidad).isEmpty()){
                 entidad.setEstado(Boolean.FALSE);
                 entidad.setTiempoEstado(new Date());
                 return super.inactivarRegistro(entidad); 

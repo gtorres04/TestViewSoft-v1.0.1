@@ -20,28 +20,24 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Entidad Pais Relacionada con la Tabla PAIS Utilizando JPA.
- * 
- * @author Gerlin Orlando Torres Saavedra
+ *
+ * @author GerlinOrlandoTorresSaavedra
  */
 @Entity
-@Table(name = "paises")
+@Table(name = "pais")
 @NamedQueries({
-    @NamedQuery(name = "Paises.findAll", query = "SELECT p FROM Paises p")})
-public class Paises implements Serializable {
+    @NamedQuery(name = "Pais.findAll", query = "SELECT p FROM Pais p")})
+public class Pais implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "estado")
@@ -49,19 +45,14 @@ public class Paises implements Serializable {
     @Column(name = "tiempo_estado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tiempoEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paisesId")
-    private List<UsuariosPaises> usuariosPaisesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paisId")
+    private List<UsuarioPais> usuarioPaisList;
 
-    public Paises() {
+    public Pais() {
     }
 
-    public Paises(Integer id) {
+    public Pais(Integer id) {
         this.id = id;
-    }
-
-    public Paises(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -96,12 +87,12 @@ public class Paises implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    public List<UsuariosPaises> getUsuariosPaisesList() {
-        return usuariosPaisesList;
+    public List<UsuarioPais> getUsuarioPaisList() {
+        return usuarioPaisList;
     }
 
-    public void setUsuariosPaisesList(List<UsuariosPaises> usuariosPaisesList) {
-        this.usuariosPaisesList = usuariosPaisesList;
+    public void setUsuarioPaisList(List<UsuarioPais> usuarioPaisList) {
+        this.usuarioPaisList = usuarioPaisList;
     }
 
     @Override
@@ -114,10 +105,10 @@ public class Paises implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Paises)) {
+        if (!(object instanceof Pais)) {
             return false;
         }
-        Paises other = (Paises) object;
+        Pais other = (Pais) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -126,9 +117,7 @@ public class Paises implements Serializable {
 
     @Override
     public String toString() {
-        return "Paises{" + "id=" + id + ", nombre=" + nombre + ", estado=" + estado + ", tiempoEstado=" + tiempoEstado + ", usuariosPaisesList=" + usuariosPaisesList + '}';
+        return "com.testviewsoft.entity.Pais[ id=" + id + " ]";
     }
-
-    
     
 }

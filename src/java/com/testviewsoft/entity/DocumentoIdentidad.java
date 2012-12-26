@@ -14,8 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,22 +21,19 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 /**
- * Entidad DocumentosIdentidad Relacionada con la Tabla DOCUMENTOSIDENTIDAD Utilizando JPA.
- * 
- * @author Gerlin Orlando Torres Saavedra
+ *
+ * @author GerlinOrlandoTorresSaavedra
  */
 @Entity
-@Table(name = "documentos_identidad")
-@NamedQueries({
-    @NamedQuery(name = "DocumentosIdentidad.findAll", query = "SELECT d FROM DocumentosIdentidad d")})
-public class DocumentosIdentidad implements Serializable {
+@Table(name = "documento_identidad")
+public class DocumentoIdentidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
+    @Size(max = 100)
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "estado")
@@ -46,13 +41,13 @@ public class DocumentosIdentidad implements Serializable {
     @Column(name = "tiempo_estado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tiempoEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoIdentificacion")
-    private List<Usuarios> usuariosList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "documentoIdentidadId")
+    private List<Usuario> usuarioList;
 
-    public DocumentosIdentidad() {
+    public DocumentoIdentidad() {
     }
 
-    public DocumentosIdentidad(Integer id) {
+    public DocumentoIdentidad(Integer id) {
         this.id = id;
     }
 
@@ -88,12 +83,12 @@ public class DocumentosIdentidad implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    public List<Usuarios> getUsuariosList() {
-        return usuariosList;
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
     }
 
-    public void setUsuariosList(List<Usuarios> usuariosList) {
-        this.usuariosList = usuariosList;
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
 
     @Override
@@ -106,10 +101,10 @@ public class DocumentosIdentidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DocumentosIdentidad)) {
+        if (!(object instanceof DocumentoIdentidad)) {
             return false;
         }
-        DocumentosIdentidad other = (DocumentosIdentidad) object;
+        DocumentoIdentidad other = (DocumentoIdentidad) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -118,7 +113,7 @@ public class DocumentosIdentidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.testviewsoft.entity.DocumentosIdentidad[ id=" + id + " ]";
+        return "com.testviewsoft.entity.DocumentoIdentidad[ id=" + id + " ]";
     }
     
 }

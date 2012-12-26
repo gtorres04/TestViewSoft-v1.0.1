@@ -5,8 +5,8 @@
 package com.testviewsoft.manageBean;
 
 import com.testviewsoft.dao.DaoImpl;
-import com.testviewsoft.dao.impl.PaisesDaoImpl;
-import com.testviewsoft.entity.Paises;
+import com.testviewsoft.dao.impl.PaisDaoImpl;
+import com.testviewsoft.entity.Pais;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +16,9 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 /**
- * ManageBean PaisesBean.
+ * ManageBean PaisBean.
  * En este ManageBean se controlan todos los eventos correspondientes
- * Al CRUD de la entidad Paises lanzados desde la vista:
+ * Al CRUD de la entidad Pais lanzados desde la vista:
  * 1. Registro.
  * 2. Listado.
  * 3. Modificacion.
@@ -27,38 +27,38 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @RequestScoped
-public class PaisesBean {
-    private Paises entidad;
-    private List<Paises> entidades;
+public class PaisBean {
+    private Pais entidad;
+    private List<Pais> entidades;
     /**
-     * Constructor PaisesBean (Vacio).
-     * Se crea una instancia del ManageBean y se crea un objeto de Tipo Paises (variable entidad [Global]), 
+     * Constructor PaisBean (Vacio).
+     * Se crea una instancia del ManageBean y se crea un objeto de Tipo Pais (variable entidad [Global]), 
      * el cual tiene como objetivo recibir y devolver los valores de la vista. 
      * Ademas inicializa la lista de los paises que se han registrado hasta el momento en la base de datos, 
      * para que la vista los capture y los muestre en la tabla (grid).
      * @author Gerlin Orlando Torres Saavedra.
      */
-    public PaisesBean() {
+    public PaisBean() {
         Log("se crea un objeto paisbean");
-        entidad=new Paises();
-        getPaises();
+        entidad=new Pais();
+        getPais();
     }
 
-    public Paises getPais() {
+    public Pais getPais() {
         return entidad;
     }
 
-    public void setPais(Paises entidad) {
+    public void setPais(Pais entidad) {
         this.entidad = entidad;
     }
     /**
-     * Metodo getPaises().
+     * Metodo getPais().
      * Trae de la base de datos los paises que se encuentran almacenados.
      * @return Retorna una lista Vacia si no hay ningun pais registrado en la base de datos.
      * @author Gerlin Orlando Torres Saavedra.
      */
-    public List<Paises> getPaises() {
-        PaisesDaoImpl daoImpl=new PaisesDaoImpl();
+    public List<Pais> getPaises() {
+        PaisDaoImpl daoImpl=new PaisDaoImpl();
         entidades=daoImpl.buscarActivos();
         return entidades;
     }
@@ -70,7 +70,7 @@ public class PaisesBean {
      */
     public void insertar(){
         Log("METODO INSERTAR PAIS");
-        DaoImpl daoImpl=new PaisesDaoImpl();
+        DaoImpl daoImpl=new PaisDaoImpl();
         String mensaje=daoImpl.registrar(entidad);
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("REGISTRO DE PAIS",mensaje));        
@@ -85,7 +85,7 @@ public class PaisesBean {
      */
     public void actualizar(){
         Log("METODO ACTUALIZAR PAIS");
-        DaoImpl daoImpl=new PaisesDaoImpl();
+        DaoImpl daoImpl=new PaisDaoImpl();
         String mensaje=daoImpl.actualizar(entidad);
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ACTUALIZACION DE PAIS",mensaje));        
@@ -93,7 +93,7 @@ public class PaisesBean {
     /**
      * Metodo prepararActualizacion(Integer id).
      * Recive el Id (Llave Primaria) del Pais a modificar y lo consulta frente a la base de datos 
-     * obteniendo el objeto de tipo "Paises" completo (variable entidad [Global]), para posteriormente asignarlo a la variable "entidad" (Global), 
+     * obteniendo el objeto de tipo "Pais" completo (variable entidad [Global]), para posteriormente asignarlo a la variable "entidad" (Global), 
      * para que cuando se llame el metodo actualizar() el objeto tenga sus valores modificados.
      * @see actualizar() modifica el objeto Pais.
      * @param id primaryKey de la entidad de tipo Pais a Modificar.
@@ -101,7 +101,7 @@ public class PaisesBean {
      */
     public void prepararActualizacion(Integer id){
         Log("METODO PREPARAR ACTUALIZACION DEL PAIS");
-        PaisesDaoImpl daoImpl=new PaisesDaoImpl();
+        PaisDaoImpl daoImpl=new PaisDaoImpl();
         entidad=daoImpl.buscarPorId(id);
     }
     /**
@@ -115,7 +115,7 @@ public class PaisesBean {
      */
     public void eliminar(){
         Log("METODO ELIMINAR PAIS");
-        PaisesDaoImpl daoImpl=new PaisesDaoImpl();
+        PaisDaoImpl daoImpl=new PaisDaoImpl();
         String mensaje=daoImpl.inactivarRegistro(entidad);
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ELIMINACION DE PAIS",mensaje));
@@ -124,7 +124,7 @@ public class PaisesBean {
     /**
      * Metodo prepararEliminacion(Integer id).
      * Recive el Id (llave primaria) del Pais a modificar y lo consulta frente a la base de datos 
-     * obteniendo el objeto de tipo "Paises" (variable entidad [Global]) completo, para posteriormente 
+     * obteniendo el objeto de tipo "Pais" (variable entidad [Global]) completo, para posteriormente 
      * asignarlo a la variable "entidad" (Global), para que cuando se llame el metodo @see eliminar() el 
      * objeto tenga sus valores completos para su eliminacion.
      * @see eliminar() modifica el objeto Pais (variable entidad [Global]).
@@ -133,7 +133,7 @@ public class PaisesBean {
      */
     public void prepararEliminacion(Integer id){
         Log("METODO PREPARAR ELIMINACION DEL PAIS");
-        PaisesDaoImpl daoImpl=new PaisesDaoImpl();
+        PaisDaoImpl daoImpl=new PaisDaoImpl();
         entidad=daoImpl.buscarPorId(id);
     }
     /**

@@ -5,8 +5,8 @@
 package com.testviewsoft.manageBean;
 
 import com.testviewsoft.dao.DaoImpl;
-import com.testviewsoft.dao.impl.DocumentosIdentidadDaoImpl;
-import com.testviewsoft.entity.DocumentosIdentidad;
+import com.testviewsoft.dao.impl.DocumentoIdentidadDaoImpl;
+import com.testviewsoft.entity.DocumentoIdentidad;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,9 +16,9 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 /**
- * ManageBean DocumentosIdentidadBean.
+ * ManageBean DocumentoIdentidadBean.
  * En este ManageBean se controlan todos los eventos correspondientes
- * Al CRUD de la entidad DocumentosIdentidad lansados desde la vista:
+ * Al CRUD de la entidad DocumentoIdentidad lansados desde la vista:
  * 1. Registro.
  * 2. Listado.
  * 3. Modificacion.
@@ -27,37 +27,37 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @RequestScoped
-public class DocumentosIdentidadBean {
-    private DocumentosIdentidad entidad;
-    private List<DocumentosIdentidad> entidades;
+public class DocumentoIdentidadBean {
+    private DocumentoIdentidad entidad;
+    private List<DocumentoIdentidad> entidades;
     /**
-     * Constructor DocumentosIdentidadBeanBean (Vacio).
-     * Se crea una instancia del ManageBean y se crea un objeto de Tipo DocumentosIdentidadBean, 
+     * Constructor DocumentoIdentidadBeanBean (Vacio).
+     * Se crea una instancia del ManageBean y se crea un objeto de Tipo DocumentoIdentidadBean, 
      * el cual tiene como objetivo, recibir y devolver los valores de la vista. 
-     * Ademas inicializa la lista de los DocumentosIdentidadBean que se han registrado hasta el momento.
+     * Ademas inicializa la lista de los DocumentoIdentidadBean que se han registrado hasta el momento.
      * @author Gerlin Orlando Torres Saavedra.
      */
-    public DocumentosIdentidadBean() {
-        Log("se crea un objeto DocumentosIdentidadBeanbean");
-        entidad=new DocumentosIdentidad();
-        getDocumentosIdentidad();
+    public DocumentoIdentidadBean() {
+        Log("se crea un objeto DocumentoIdentidadBeanbean");
+        entidad=new DocumentoIdentidad();
+        getDocumentoIdentidad();
     }
 
-    public DocumentosIdentidad getDocumentosIdentidad() {
+    public DocumentoIdentidad getDocumentoIdentidad() {
         return entidad;
     }
 
-    public void setDocumentosIdentidad(DocumentosIdentidad entidad) {
+    public void setDocumentoIdentidad(DocumentoIdentidad entidad) {
         this.entidad = entidad;
     }
     /**
-     * Metodo getDocumentosIdentidad().
+     * Metodo getDocumentoIdentidad().
      * Trae de la base de datos los documentos de Identidad que se encuentran almacenados
-     * @return Una lista Vacia si no hay ningun DocumentosIdentidad registrado en la base de datos.
+     * @return Una lista Vacia si no hay ningun DocumentoIdentidad registrado en la base de datos.
      * @author Gerlin Orlando Torres Saavedra.
      */
-    public List<DocumentosIdentidad> getDocumentosIdentidades() {
-        DocumentosIdentidadDaoImpl documentosIdentidadDao=new DocumentosIdentidadDaoImpl();
+    public List<DocumentoIdentidad> getDocumentoIdentidades() {
+        DocumentoIdentidadDaoImpl documentosIdentidadDao=new DocumentoIdentidadDaoImpl();
         entidades=documentosIdentidadDao.buscarActivos();
         return entidades;
     }
@@ -69,7 +69,7 @@ public class DocumentosIdentidadBean {
      */
     public void insertar(){
         Log("METODO INSERTAR DOCUMENTOS IDENTIDAD");
-        DaoImpl documentosIdentidadDao=new DocumentosIdentidadDaoImpl();
+        DaoImpl documentosIdentidadDao=new DocumentoIdentidadDaoImpl();
         String mensaje=documentosIdentidadDao.registrar(entidad);
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("REGISTRO DE DOCUMENTOS IDENTIDAD",mensaje));        
@@ -84,23 +84,23 @@ public class DocumentosIdentidadBean {
      */
     public void actualizar(){
         Log("METODO ACTUALIZAR DOCUMENTOS IDENTIDAD");
-        DaoImpl documentosIdentidadDao=new DocumentosIdentidadDaoImpl();
+        DaoImpl documentosIdentidadDao=new DocumentoIdentidadDaoImpl();
         String mensaje=documentosIdentidadDao.actualizar(entidad);
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ACTUALIZACION DE Documentos Identidad",mensaje));        
     }
     /**
      * Metodo prepararActualizacion(Integer id).
-     * Recive el Id del DocumentosIdentidad a modificar y lo consulta frente a la base de datos 
-     * obteniendo el objeto DocumentosIdentidad completo, para posteriormente asignarlo a la variable "entidad" (Global), 
+     * Recive el Id del DocumentoIdentidad a modificar y lo consulta frente a la base de datos 
+     * obteniendo el objeto DocumentoIdentidad completo, para posteriormente asignarlo a la variable "entidad" (Global), 
      * para que cuando se llame el metodo @see actualizar() el objeto tenga sus valores modificados.
-     * @see actualizar() modifica el objeto DocumentosIdentidad.
-     * @param id identificados del DocumentosIdentidad a Modificar.
+     * @see actualizar() modifica el objeto DocumentoIdentidad.
+     * @param id identificados del DocumentoIdentidad a Modificar.
      * @author Gerlin Orlando Torres Saavedra.
      */
     public void prepararActualizacion(Integer id){
-        Log("METODO PREPARAR ACTUALIZACION DEL DocumentosIdentidad");
-        DocumentosIdentidadDaoImpl daoImpl=new DocumentosIdentidadDaoImpl();
+        Log("METODO PREPARAR ACTUALIZACION DEL DocumentoIdentidad");
+        DocumentoIdentidadDaoImpl daoImpl=new DocumentoIdentidadDaoImpl();
         entidad=daoImpl.buscarPorId(id);
     }
     /**
@@ -113,25 +113,25 @@ public class DocumentosIdentidadBean {
      * @author Gerlin Orlando Torres Saavedra.
      */
     public void eliminar(){
-        Log("METODO ELIMINAR DocumentosIdentidad");
-        DocumentosIdentidadDaoImpl daoImpl=new DocumentosIdentidadDaoImpl();
+        Log("METODO ELIMINAR DocumentoIdentidad");
+        DocumentoIdentidadDaoImpl daoImpl=new DocumentoIdentidadDaoImpl();
         String mensaje=daoImpl.inactivarRegistro(entidad);
         FacesContext context = FacesContext.getCurrentInstance(); 
         context.addMessage("grwForMensajeConfirmacion",new FacesMessage("ELIMINACION DE DOCUMENTO DE IDENTIDAD",mensaje));
     }
     /**
      * Metodo prepararEliminacion(Integer id).
-     * Recive el Id del DocumentosIdentidad a modificar y lo consulta frente a la base de datos 
-     * obteniendo el objeto DocumentosIdentidad completo, para posteriormente asignarlo a la variable "entidad" (Global), 
+     * Recive el Id del DocumentoIdentidad a modificar y lo consulta frente a la base de datos 
+     * obteniendo el objeto DocumentoIdentidad completo, para posteriormente asignarlo a la variable "entidad" (Global), 
      * para que cuando se llame el metodo @see eliminar() el objeto tenga sus valores 
      * completos para su eliminacion.
-     * @see eliminar() modifica el objeto DocumentosIdentidad.
-     * @param id identificados del DocumentosIdentidad a Modificar.
+     * @see eliminar() modifica el objeto DocumentoIdentidad.
+     * @param id identificados del DocumentoIdentidad a Modificar.
      * @author Gerlin Orlando Torres Saavedra.
      */
     public void prepararEliminacion(Integer id){
         Log("METODO PREPARAR ELIMINACION DEL DOCUMENTO DE IDENTIDAD");
-        DocumentosIdentidadDaoImpl daoImpl=new DocumentosIdentidadDaoImpl();
+        DocumentoIdentidadDaoImpl daoImpl=new DocumentoIdentidadDaoImpl();
         entidad=daoImpl.buscarPorId(id);
     }
     /**

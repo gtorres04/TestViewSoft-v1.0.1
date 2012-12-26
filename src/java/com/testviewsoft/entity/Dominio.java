@@ -6,57 +6,57 @@ package com.testviewsoft.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Entidad UsuariosPaises Relacionada con la Tabla USUARIOSPAISES Utilizando JPA.
- * 
- * @author Gerlin Orlando Torres Saavedra
+ *
+ * @author GerlinOrlandoTorresSaavedra
  */
 @Entity
-@Table(name = "usuarios_paises")
-@NamedQueries({
-    @NamedQuery(name = "UsuariosPaises.findAll", query = "SELECT u FROM UsuariosPaises u")})
-public class UsuariosPaises implements Serializable {
+@Table(name = "dominio")
+public class Dominio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
-    @Column(name = "gentilicio")
-    private String gentilicio;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "nombre")
+    private String nombre;
     @Column(name = "estado")
     private Boolean estado;
     @Column(name = "tiempo_estado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tiempoEstado;
-    @JoinColumn(name = "usuarios_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuarios usuariosId;
-    @JoinColumn(name = "paises_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Paises paisesId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dominioId")
+    private List<Cuenta> cuentaList;
 
-    public UsuariosPaises() {
+    public Dominio() {
     }
 
-    public UsuariosPaises(Integer id) {
+    public Dominio(Integer id) {
         this.id = id;
+    }
+
+    public Dominio(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -67,12 +67,12 @@ public class UsuariosPaises implements Serializable {
         this.id = id;
     }
 
-    public String getGentilicio() {
-        return gentilicio;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setGentilicio(String gentilicio) {
-        this.gentilicio = gentilicio;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Boolean getEstado() {
@@ -91,20 +91,12 @@ public class UsuariosPaises implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    public Usuarios getUsuariosId() {
-        return usuariosId;
+    public List<Cuenta> getCuentaList() {
+        return cuentaList;
     }
 
-    public void setUsuariosId(Usuarios usuariosId) {
-        this.usuariosId = usuariosId;
-    }
-
-    public Paises getPaisesId() {
-        return paisesId;
-    }
-
-    public void setPaisesId(Paises paisesId) {
-        this.paisesId = paisesId;
+    public void setCuentaList(List<Cuenta> cuentaList) {
+        this.cuentaList = cuentaList;
     }
 
     @Override
@@ -117,10 +109,10 @@ public class UsuariosPaises implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsuariosPaises)) {
+        if (!(object instanceof Dominio)) {
             return false;
         }
-        UsuariosPaises other = (UsuariosPaises) object;
+        Dominio other = (Dominio) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -129,7 +121,7 @@ public class UsuariosPaises implements Serializable {
 
     @Override
     public String toString() {
-        return "com.testviewsoft.entity.UsuariosPaises[ id=" + id + " ]";
+        return "com.testviewsoft.entity.Dominio[ id=" + id + " ]";
     }
     
 }
