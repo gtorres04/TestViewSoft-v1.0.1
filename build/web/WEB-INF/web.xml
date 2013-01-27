@@ -19,6 +19,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>vistaPaises.tvs</welcome-file>
+        <welcome-file>vistaRol.tvs</welcome-file>
     </welcome-file-list>
 </web-app>

@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +28,12 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "documento_identidad")
+@NamedQueries({
+    @NamedQuery(name = "DocumentoIdentidad.findAll", query = "SELECT d FROM DocumentoIdentidad d"),
+    @NamedQuery(name = "DocumentoIdentidad.findById", query = "SELECT d FROM DocumentoIdentidad d WHERE d.id = :id"),
+    @NamedQuery(name = "DocumentoIdentidad.findByNombre", query = "SELECT d FROM DocumentoIdentidad d WHERE d.nombre = :nombre"),
+    @NamedQuery(name = "DocumentoIdentidad.findByEstado", query = "SELECT d FROM DocumentoIdentidad d WHERE d.estado = :estado"),
+    @NamedQuery(name = "DocumentoIdentidad.findByTiempoEstado", query = "SELECT d FROM DocumentoIdentidad d WHERE d.tiempoEstado = :tiempoEstado")})
 public class DocumentoIdentidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

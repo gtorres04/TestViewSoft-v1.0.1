@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,6 +30,18 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "usuario")
+@NamedQueries({
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
+    @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.findByReferenciaIdentificacion", query = "SELECT u FROM Usuario u WHERE u.referenciaIdentificacion = :referenciaIdentificacion"),
+    @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre"),
+    @NamedQuery(name = "Usuario.findByApellido", query = "SELECT u FROM Usuario u WHERE u.apellido = :apellido"),
+    @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento"),
+    @NamedQuery(name = "Usuario.findBySexo", query = "SELECT u FROM Usuario u WHERE u.sexo = :sexo"),
+    @NamedQuery(name = "Usuario.findByMail", query = "SELECT u FROM Usuario u WHERE u.mail = :mail"),
+    @NamedQuery(name = "Usuario.findByFoto", query = "SELECT u FROM Usuario u WHERE u.foto = :foto"),
+    @NamedQuery(name = "Usuario.findByEstado", query = "SELECT u FROM Usuario u WHERE u.estado = :estado"),
+    @NamedQuery(name = "Usuario.findByTiempoEstado", query = "SELECT u FROM Usuario u WHERE u.tiempoEstado = :tiempoEstado")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,6 +67,9 @@ public class Usuario implements Serializable {
     @Size(max = 255)
     @Column(name = "mail")
     private String mail;
+    @Size(max = 255)
+    @Column(name = "foto")
+    private String foto;
     @Column(name = "estado")
     private Boolean estado;
     @Column(name = "tiempo_estado")
@@ -127,6 +144,14 @@ public class Usuario implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public Boolean getEstado() {

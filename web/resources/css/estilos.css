@@ -19,3 +19,6 @@
 .iconaccept{
     background: url("#{resource['img:accept.png']}") !important;
 }
+.iconsession{
+    background: url("#{resource['img:session.png']}") !important;
+}

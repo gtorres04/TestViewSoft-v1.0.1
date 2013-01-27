@@ -25,13 +25,13 @@ import javax.persistence.TemporalType;
  * @author GerlinOrlandoTorresSaavedra
  */
 @Entity
-@Table(name = "privilegio_rol")
+@Table(name = "rol_rol")
 @NamedQueries({
-    @NamedQuery(name = "PrivilegioRol.findAll", query = "SELECT p FROM PrivilegioRol p"),
-    @NamedQuery(name = "PrivilegioRol.findById", query = "SELECT p FROM PrivilegioRol p WHERE p.id = :id"),
-    @NamedQuery(name = "PrivilegioRol.findByEstado", query = "SELECT p FROM PrivilegioRol p WHERE p.estado = :estado"),
-    @NamedQuery(name = "PrivilegioRol.findByTiempoEstado", query = "SELECT p FROM PrivilegioRol p WHERE p.tiempoEstado = :tiempoEstado")})
-public class PrivilegioRol implements Serializable {
+    @NamedQuery(name = "RolRol.findAll", query = "SELECT r FROM RolRol r"),
+    @NamedQuery(name = "RolRol.findById", query = "SELECT r FROM RolRol r WHERE r.id = :id"),
+    @NamedQuery(name = "RolRol.findByEstado", query = "SELECT r FROM RolRol r WHERE r.estado = :estado"),
+    @NamedQuery(name = "RolRol.findByTiempoEstado", query = "SELECT r FROM RolRol r WHERE r.tiempoEstado = :tiempoEstado")})
+public class RolRol implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,17 +43,17 @@ public class PrivilegioRol implements Serializable {
     @Column(name = "tiempo_estado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tiempoEstado;
-    @JoinColumn(name = "rol_id", referencedColumnName = "id")
+    @JoinColumn(name = "rol_hijo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Rol rolId;
-    @JoinColumn(name = "privilegio_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Privilegio privilegioId;
+    private Rol rolHijoId;
+    @JoinColumn(name = "rol_padre_id", referencedColumnName = "id")
+    @ManyToOne
+    private Rol rolPadreId;
 
-    public PrivilegioRol() {
+    public RolRol() {
     }
 
-    public PrivilegioRol(Integer id) {
+    public RolRol(Integer id) {
         this.id = id;
     }
 
@@ -81,20 +81,20 @@ public class PrivilegioRol implements Serializable {
         this.tiempoEstado = tiempoEstado;
     }
 
-    public Rol getRolId() {
-        return rolId;
+    public Rol getRolHijoId() {
+        return rolHijoId;
     }
 
-    public void setRolId(Rol rolId) {
-        this.rolId = rolId;
+    public void setRolHijoId(Rol rolHijoId) {
+        this.rolHijoId = rolHijoId;
     }
 
-    public Privilegio getPrivilegioId() {
-        return privilegioId;
+    public Rol getRolPadreId() {
+        return rolPadreId;
     }
 
-    public void setPrivilegioId(Privilegio privilegioId) {
-        this.privilegioId = privilegioId;
+    public void setRolPadreId(Rol rolPadreId) {
+        this.rolPadreId = rolPadreId;
     }
 
     @Override
@@ -107,10 +107,10 @@ public class PrivilegioRol implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PrivilegioRol)) {
+        if (!(object instanceof RolRol)) {
             return false;
         }
-        PrivilegioRol other = (PrivilegioRol) object;
+        RolRol other = (RolRol) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -119,7 +119,7 @@ public class PrivilegioRol implements Serializable {
 
     @Override
     public String toString() {
-        return "com.testviewsoft.entity.PrivilegioRol[ id=" + id + " ]";
+        return "com.testviewsoft.entity.RolRol[ id=" + id + " ]";
     }
     
 }

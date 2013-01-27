@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Privilegios</title>
+            </f:facet>
+            <h:outputStylesheet library="css" name="estilos.css" />
+        </h:head>
+
+        <h:body>
+            
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    Header
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="250" header="Menu de Opciones" collapsible="true">
+                    <p:menu style="width:94%">
+                        <p:menuitem value="Doc. de Identidad" outcome="vistaDocumentosIdentidad" />
+                        <p:menuitem value="Usuarios" outcome="vistaUsuarios" />
+                        <p:menuitem value="Paises" outcome="vistaPaises" />
+                    </p:menu>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="idFrmBtnNuevoPrivilegio" style="text-align: center">
+                        <p:commandButton value="Nuevo Privilegio" icon="iconadd" oncomplete="dlgWgvNuevoPrivilegio.show()" update=":frmIdNuevoPrivilegio"/>
+                    </h:form>
+                    <br/>
+                    <!--MENSAJE DE CONFIRMACION-->
+                    <p:growl for="grwForMensajeConfirmacion" id="grwIdMensajeConfirmacion" showDetail="true"/>
+                    <!--LISTADO DE LOS PRIVILEGIO-->
+                    <h:form id="frmIdlistaPrivilegios">
+                        <p:dataTable var="privilegio" onExpandStart="#{privilegioBean.privilegios}" value="#{privilegioBean.privilegios}" emptyMessage="No Privilegio." paginator="true" rows="15"  
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">  
+                            <p:column headerText="ID">  
+                                <h:outputText value="#{privilegio.id}" />  
+                            </p:column>  
+                            <p:column headerText="Nombre">  
+                                <h:outputText value="#{privilegio.nombre}" />  
+                            </p:column>  
+                            <p:column style="width:12%; text-align: center" headerText="Opciones">  
+                                <p:commandButton oncomplete="dlgWgvEditarPrivilegio.show()" update=":frmIdEditarPrivilegio:dlgIdEditarPrivilegio" action="#{privilegioBean.prepararActualizacion(privilegio.id)}" icon="iconedit" title="Editar"/>
+                                <p:commandButton oncomplete="confDlgWgvConfirmarEliminar.show()" update=":frmIdCofirmarEliminar" action="#{privilegioBean.prepararEliminacion(privilegio.id)}" icon="icondelete" title="Eliminar"/>    
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+            </p:layout>
+            <!--FORMULARIO DE NUEVO PRIVILEGIO-->
+            <h:form id="frmIdNuevoPrivilegio">
+                <p:dialog header="Registrar Privilegio" widgetVar="dlgWgvNuevoPrivilegio" resizable="false" id="dlgIdNuevoPrivilegio" modal="true">  
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">        
+                        <h:outputText value="Nombre:" /> 
+                        <p:inputText required="true" value="#{privilegioBean.privilegio.nombre}" style="width:200px">
+                        </p:inputText>
+                    </h:panelGrid>  
+                    <p:separator/>
+                    <p:commandButton value="&nbsp;Guardar" update=":grwIdMensajeConfirmacion :frmIdlistaPrivilegios frmIdNuevoPrivilegio" action="#{privilegioBean.insertar()}" oncomplete="handleLoginRequest(xhr, status, args,1)" icon="iconsave" title="Guardar"/>
+                    <p:commandButton value="&nbsp;Cancelar" update=":frmIdlistaPrivilegios" oncomplete="dlgWgvNuevoPrivilegio.hide()" icon="iconcancel" title="Cancel"/>
+                </p:dialog>
+            </h:form>
+            <!--FORMULARIO MODIFICAR PRIVILEGIO-->
+            <h:form id="frmIdEditarPrivilegio">
+                <p:dialog header="Actualizar Privilegio" widgetVar="dlgWgvEditarPrivilegio" resizable="false" id="dlgIdEditarPrivilegio" modal="true">  
+                    <h:inputHidden value="#{privilegioBean.privilegio.id}"/>
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+                        <h:outputText value="Nombre:" /> 
+                        <p:inputText required="true" value="#{privilegioBean.privilegio.nombre}" style="width:200px"/>  
+                    </h:panelGrid>  
+                    <p:separator/>
+                    <p:commandButton value="&nbsp;Guardar" update=":grwIdMensajeConfirmacion :frmIdlistaPrivilegios frmIdEditarPrivilegio" action="#{privilegioBean.actualizar()}" oncomplete="handleLoginRequest(xhr, status, args,2)" icon="iconsave" title="Guardar"/>
+                    <p:commandButton value="&nbsp;Cancelar" update=":frmIdlistaPrivilegios" oncomplete="dlgWgvEditarPrivilegio.hide()" icon="iconcancel" title="Cancel"/>
+                </p:dialog>
+            </h:form>
+            <!-- vista Confirmar Eliminacion-->
+            <h:form id="frmIdCofirmarEliminar">
+                <p:confirmDialog header="Eliminar Privilegio" severity="alert" widgetVar="confDlgWgvConfirmarEliminar">
+                    <h:inputHidden value="#{privilegioBean.privilegio.id}"/>
+                    <h:inputHidden value="#{privilegioBean.privilegio.nombre}"/>
+                    <f:facet name="message">
+                        <h:outputText value="Confirme Eliminar el Privilegio [ #{privilegioBean.privilegio.nombre} ]"/>
+                    </f:facet>
+                    <p:commandButton icon="iconaccept" value="Aceptar" action="#{privilegioBean.eliminar()}" update=":frmIdlistaPrivilegios :grwIdMensajeConfirmacion" oncomplete="confDlgWgvConfirmarEliminar.hide()"/>
+                    <p:commandButton icon="iconcancel" value="Cancelar" onclick="confDlgWgvConfirmarEliminar.hide();" type="button" />
+                </p:confirmDialog>
+            </h:form>
+            <script type="text/javascript">
+                function registrar(args){
+                    if(args.validationFailed){
+                        dlgWgvNuevoPrivilegio.show();
+                    }else{
+                        dlgWgvNuevoPrivilegio.hide();
+                    }
+                }
+                function editar(args){
+                    if(args.validationFailed){
+                        dlgWgvEditarPrivilegio.show();
+                    }else{
+                        dlgWgvEditarPrivilegio.hide();
+                    }
+                }
+                function handleLoginRequest(xhr, status, args,opcion) {
+                    switch(opcion){
+                        case 1:
+                            registrar(args);
+                        break;
+                        case 2:
+                            editar(args);
+                        break;
+                    }
+                }  
+            </script>
+        </h:body>
+
+    </f:view>
+</html>
+

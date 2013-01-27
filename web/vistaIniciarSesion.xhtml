@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Inicio</title>
+            </f:facet>
+            <h:outputStylesheet library="css" name="estilos.css" />
+        </h:head>
+
+        <h:body>
+            <h:panelGrid width="450" id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+                <p:panel header="AUTENTICAR">
+                    <h:graphicImage value="#{resource['img:session.png']}"/>
+                    <h:form id="frmIdAutenticar">
+                        <p:commandButton value="Iniciar Sesion" oncomplete="dlgWgvInicioSesion.show()"/>
+                    </h:form>
+                </p:panel>
+                <p:panel header="REGISTRAR">
+                    <h:graphicImage value="#{resource['img:members.png']}"/>
+                    <h:form id="frmIdRegistrar">  
+                        <p:commandButton value="Cree una Cuenta" oncomplete="dlgWgvNuevaCuenta.show()"/>
+                    </h:form>
+                </p:panel>
+            </h:panelGrid>
+            <!--MENSAJE DE CONFIRMACION-->
+            <p:growl life="3000" for="grwForMensajeConfirmacion" id="grwIdMensajeConfirmacion" showDetail="true"/>
+            <!--FORMULARIO DE INICIO DE SESION-->
+            <h:form id="frmIdInicioSesion">
+                <p:dialog header="Inicio Sesion" widgetVar="dlgWgvInicioSesion" resizable="false" id="dlgIdInicioSesion" modal="true">  
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">        
+                        <h:outputText value="Usuario:" /> 
+                        <p:inputText required="true" value="#{inicioSesionBean.cuenta.usuario}" style="width:200px"/>
+                        <h:outputText value="Contraseña" /> 
+                        <p:inputText required="true" value="#{inicioSesionBean.cuenta.contrasena}" style="width:200px"/>
+                    </h:panelGrid>  
+                    <p:separator/>
+                    <p:commandButton value="&nbsp;Iniciar Sesion" action="#{inicioSesionBean.iniciarSesion()}" oncomplete="dlgWgvInicioSesion.hide()"  icon="iconsave" title="Guardar"/>
+                    <p:commandButton value="&nbsp;Cancelar" action="#{inicioSesionBean.cancelar()}" oncomplete="dlgWgvInicioSesion.hide()" icon="iconcancel" title="Cancel"/>
+                </p:dialog>
+            </h:form>
+            <!--FORMULARIO DE NUEVA CUENTA-->
+            <h:form id="frmIdIniciarSesion">
+                <p:dialog header="Crear Nueva Cuenta" widgetVar="dlgWgvNuevaCuenta" resizable="false" id="dlgIdInicioSesion" modal="true">
+                    <p:wizard widgetVar="wiz" backLabel="Regresar" nextLabel="Siguiente" flowListener="#{inicioSesionBean.recorrerflujoDeCreacionDeCuenta}">  
+                       <p:tab id="Cuenta" title="Personal">  
+                            <p:panel header="Crear Cuenta">  
+                                <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">  
+                                    <h:outputText value="Correo Personal: *" />
+                                    <h:inputHidden />
+
+                                    <p:inputText required="true" label="Correo Personal" value="#{inicioSesionBean.cuenta.correo}" />  
+                                    <h:panelGroup>
+                                        <h:outputText value="@" />    
+                                    <p:selectOneMenu id="slct1MnIdListaDominio" value="#{inicioSesionBean.idDominio}" required="true">  
+                                        <f:selectItems value="#{cuentaBean.listaSelectItemDominioActivos()}"/> 
+                                    </p:selectOneMenu>
+                                    </h:panelGroup>
+                                    <h:outputText value="Usuario: *" />  
+                                    <p:inputText  required="true" label="Usuario" value="#{inicioSesionBean.cuenta.usuario}" />  
+
+                                    <h:outputText value="Contraseña: *" />  
+                                    <p:password required="true" id="feedback" value="#{inicioSesionBean.cuenta.contrasena}" match="pswrdIdConfirmarContrasena" feedback="true" label="Contraseña" weakLabel="Debil" goodLabel="Regular" strongLabel="Optima"/>  
+
+                                    <h:outputText value="Confirmar Contraseña: *" />  
+                                    <p:password required="true" id="pswrdIdConfirmarContrasena" value="#{inicioSesionBean.cuenta.contrasena}" />
+
+                                    <h:outputText value="Skip to last: " />  
+                                    <h:selectBooleanCheckbox value="#{inicioSesionBean.skip}" />  
+                                </h:panelGrid>  
+                            </p:panel>  
+                        </p:tab>  
+                        <p:tab id="Otros" title="Informacion Addicional">  
+                            <p:panel header="Datos del Usuario"> 
+                                <h:panelGrid id="pnlGrdIdTablaFomularioNuevoUsuario" columns="2" cellpadding="4" style="margin:0 auto;">        
+                                    <h:outputText value="Tipo Identificacion" />
+                                    <h:outputText value="Identificación" />
+                                    <p:selectOneMenu id="slct1MnIdListaDocumentosIdentidad" value="#{inicioSesionBean.idDocumentoIdentificacion}" required="true">  
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="" />  
+                                        <f:selectItems value="#{usuarioBean.listaSelectItemDocumentosIdentidadActivos()}"/> 
+                                    </p:selectOneMenu>
+                                    <p:inputText required="true" id="inpTxtIdReferenciaIdentificacion" value="#{inicioSesionBean.usuario.referenciaIdentificacion}" style="width:200px"/> 
+                                    <h:outputText value="Nombre:" />
+                                    <p:inputText required="true" id="inpTxtIdNombre" value="#{inicioSesionBean.usuario.nombre}" style="width:200px"/>
+                                    <h:outputText value="Apellido:" />  
+                                    <p:inputText required="true" id="inpTxtIdApellido" value="#{inicioSesionBean.usuario.apellido}" style="width:200px"/>  
+
+                                    <h:outputText value="Sexo:" />
+                                    <p:selectOneMenu id="slct1MnIdSexo" value="#{inicioSesionBean.usuario.sexo}">  
+                                        <f:selectItem itemLabel="M" itemValue="M" />  
+                                        <f:selectItem itemLabel="F" itemValue="F" />  
+                                    </p:selectOneMenu>
+                                    <h:outputText value="Fecha de Nacimiento:" />
+                                    <p:calendar id="cldrIdFechaNacimiento" value="#{inicioSesionBean.usuario.fechaNacimiento}" mode="popup" showOn="button" navigator="false" pattern="dd/MM/RR" />
+                                    <h:outputText value="E-Mail" />
+                                    <p:inputText id="inpTxtIdMail" value="#{inicioSesionBean.usuario.mail}" style="width:200px"/>
+                                    <h:outputText value="Pais" />
+                                    <p:selectOneMenu id="slct1MnIdNuevoUsuarioListaPaises" value="#{inicioSesionBean.idPais}">  
+                                        <f:selectItem itemLabel="--Seleccione--" itemValue="0"/>  
+                                        <f:selectItems value="#{inicioSesionBean.listaSelectItemPaisActivos()}"/>  
+                                        <p:ajax listener="#{inicioSesionBean.agregarPaisAlUsuario()}" update="slct1MnIdNuevoUsuarioListaPaises dttbListaSeleccionPaises"/>
+                                    </p:selectOneMenu>
+                                    <p:dataTable id="dttbListaSeleccionPaises" var="usuarioPais" onExpandStart="#{inicioSesionBean.listaUsuarioPais}" value="#{inicioSesionBean.listaUsuarioPais}" emptyMessage="No Nacionalidad." paginator="true" rows="15" paginatorPosition="bottom">
+                                        <p:column headerText="Nacionalidad">
+                                            <h:outputText  value="#{usuarioPais.paisId.nombre}"/>
+                                        </p:column>
+                                        <p:column style="width:12%; text-align: center" headerText="Eliminar">  
+                                            <p:commandButton process="@this" icon="icondelete" title="Eliminar" update=":frmIdIniciarSesion:slct1MnIdNuevoUsuarioListaPaises dttbListaSeleccionPaises" action="#{usuarioPaisBean.eliminarPaisRelacionadosAlUsuario(usuarioPais.paisId.id)}"/>    
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:panelGrid> 
+                            </p:panel>  
+                        </p:tab>  
+                        <p:tab id="confirm" title="Confirmación">  
+                            <p:panel header="Confirmar">  
+                                <h:panelGrid id="confirmation" columns="2">  
+                                    <h:outputText value="Correo: " />
+                                    <h:panelGroup>
+                                        <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.cuenta.correo}" />  
+                                        <h:outputText styleClass="outputLabel" value="@" />  
+                                        <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.cuenta.dominioId.nombre}" />
+                                    </h:panelGroup>
+                                    <h:outputText value="Usuario: " />  
+                                    <h:outputText  styleClass="outputLabel" value="#{inicioSesionBean.cuenta.usuario}"/>  
+
+                                    <h:outputText value="Tipo de Documento" />  
+                                    <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.usuario.documentoIdentidadId.nombre}" />  
+
+                                    <h:outputText value="Serial del Documento" />  
+                                    <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.usuario.referenciaIdentificacion}" />  
+
+                                    <h:outputText value="Nombre: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.usuario.nombre}" />  
+
+                                    <h:outputText value="Apellido: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.usuario.apellido}" />  
+
+                                    <h:outputText value="Sexo: " />  
+                                    <h:outputText styleClass="outputLabel"  value="#{inicioSesionBean.usuario.sexo}" />  
+
+                                    <h:outputText value="Fecha Nacimiento: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.usuario.fechaNacimiento}" />  
+
+                                    <h:outputText value="E-Mail " />  
+                                    <h:outputText styleClass="outputLabel" value="#{inicioSesionBean.usuario.mail}"/>  
+
+                                    <h:outputText />  
+                                    <h:outputText />  
+                                </h:panelGrid>  
+                                <p:commandButton value="Registrar" update=":grwIdMensajeConfirmacion dlgIdInicioSesion" action="#{inicioSesionBean.registrar()}" oncomplete="wiz.loadStep(wiz.cfg.steps[0], true)"/>  
+                            </p:panel>  
+                        </p:tab>  
+                    </p:wizard>  
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
+

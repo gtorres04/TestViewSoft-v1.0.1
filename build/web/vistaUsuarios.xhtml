@@ -9,7 +9,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Documentos de Identidad</title>
+                <title>Usuarios</title>
             </f:facet>
             <h:outputStylesheet library="css" name="estilos.css" />
         </h:head>
@@ -96,9 +96,7 @@
                         <h:outputText value="Fecha de Nacimiento:" />
                         <p:calendar id="cldrIdFechaNacimiento" value="#{usuarioPaisBean.usuario.fechaNacimiento}" mode="popup" showOn="button" navigator="false" mindate="01/01/1920" maxdate="01/01/1950" />
                         <h:outputText value="E-Mail" />
-                        <p:inputText id="inpTxtIdMail" value="#{usuarioPaisBean.usuario.mail}" style="width:200px"/> 
-
-
+                        <p:inputText id="inpTxtIdMail" value="#{usuarioPaisBean.usuario.mail}" style="width:200px"/>
                         <h:outputText value="Pais" />
                         <p:selectOneMenu id="slct1MnIdNuevoUsuarioListaPaises" value="#{usuarioPaisBean.idPais}">  
                             <f:selectItem itemLabel="--Seleccione--" itemValue="0"/>  

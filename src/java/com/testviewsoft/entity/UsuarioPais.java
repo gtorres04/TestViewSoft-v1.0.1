@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +26,11 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "usuario_pais")
+@NamedQueries({
+    @NamedQuery(name = "UsuarioPais.findAll", query = "SELECT u FROM UsuarioPais u"),
+    @NamedQuery(name = "UsuarioPais.findById", query = "SELECT u FROM UsuarioPais u WHERE u.id = :id"),
+    @NamedQuery(name = "UsuarioPais.findByEstado", query = "SELECT u FROM UsuarioPais u WHERE u.estado = :estado"),
+    @NamedQuery(name = "UsuarioPais.findByTiempoEstado", query = "SELECT u FROM UsuarioPais u WHERE u.tiempoEstado = :tiempoEstado")})
 public class UsuarioPais implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

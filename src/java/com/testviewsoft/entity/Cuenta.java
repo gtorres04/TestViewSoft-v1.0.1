@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +28,14 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "cuenta")
+@NamedQueries({
+    @NamedQuery(name = "Cuenta.findAll", query = "SELECT c FROM Cuenta c"),
+    @NamedQuery(name = "Cuenta.findById", query = "SELECT c FROM Cuenta c WHERE c.id = :id"),
+    @NamedQuery(name = "Cuenta.findByContrasena", query = "SELECT c FROM Cuenta c WHERE c.contrasena = :contrasena"),
+    @NamedQuery(name = "Cuenta.findByUsuario", query = "SELECT c FROM Cuenta c WHERE c.usuario = :usuario"),
+    @NamedQuery(name = "Cuenta.findByCorreo", query = "SELECT c FROM Cuenta c WHERE c.correo = :correo"),
+    @NamedQuery(name = "Cuenta.findByEstado", query = "SELECT c FROM Cuenta c WHERE c.estado = :estado"),
+    @NamedQuery(name = "Cuenta.findByTiempoEstado", query = "SELECT c FROM Cuenta c WHERE c.tiempoEstado = :tiempoEstado")})
 public class Cuenta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,12 +66,12 @@ public class Cuenta implements Serializable {
     @JoinColumn(name = "rol_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Rol rolId;
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuario usuarioId;
     @JoinColumn(name = "dominio_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Dominio dominioId;
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioId;
 
     public Cuenta() {
     }
@@ -133,20 +143,20 @@ public class Cuenta implements Serializable {
         this.rolId = rolId;
     }
 
-    public Usuario getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Usuario usuarioId) {
-        this.usuarioId = usuarioId;
-    }
-
     public Dominio getDominioId() {
         return dominioId;
     }
 
     public void setDominioId(Dominio dominioId) {
         this.dominioId = dominioId;
+    }
+
+    public Usuario getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Usuario usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     @Override

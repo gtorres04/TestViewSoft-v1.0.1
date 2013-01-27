@@ -14,8 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,6 +28,12 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "rol")
+@NamedQueries({
+    @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r"),
+    @NamedQuery(name = "Rol.findById", query = "SELECT r FROM Rol r WHERE r.id = :id"),
+    @NamedQuery(name = "Rol.findByNombre", query = "SELECT r FROM Rol r WHERE r.nombre = :nombre"),
+    @NamedQuery(name = "Rol.findByEstado", query = "SELECT r FROM Rol r WHERE r.estado = :estado"),
+    @NamedQuery(name = "Rol.findByTiempoEstado", query = "SELECT r FROM Rol r WHERE r.tiempoEstado = :tiempoEstado")})
 public class Rol implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,11 +51,10 @@ public class Rol implements Serializable {
     private Date tiempoEstado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rolId")
     private List<PrivilegioRol> privilegioRolList;
-    @OneToMany(mappedBy = "rolPadre")
-    private List<Rol> rolList;
-    @JoinColumn(name = "rol_padre", referencedColumnName = "id")
-    @ManyToOne
-    private Rol rolPadre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rolHijoId")
+    private List<RolRol> rolRolList;
+    @OneToMany(mappedBy = "rolPadreId")
+    private List<RolRol> rolRolList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rolId")
     private List<Cuenta> cuentaList;
 
@@ -100,20 +105,20 @@ public class Rol implements Serializable {
         this.privilegioRolList = privilegioRolList;
     }
 
-    public List<Rol> getRolList() {
-        return rolList;
+    public List<RolRol> getRolRolList() {
+        return rolRolList;
     }
 
-    public void setRolList(List<Rol> rolList) {
-        this.rolList = rolList;
+    public void setRolRolList(List<RolRol> rolRolList) {
+        this.rolRolList = rolRolList;
     }
 
-    public Rol getRolPadre() {
-        return rolPadre;
+    public List<RolRol> getRolRolList1() {
+        return rolRolList1;
     }
 
-    public void setRolPadre(Rol rolPadre) {
-        this.rolPadre = rolPadre;
+    public void setRolRolList1(List<RolRol> rolRolList1) {
+        this.rolRolList1 = rolRolList1;
     }
 
     public List<Cuenta> getCuentaList() {

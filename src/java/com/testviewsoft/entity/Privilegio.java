@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +28,13 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "privilegio")
+@NamedQueries({
+    @NamedQuery(name = "Privilegio.findAll", query = "SELECT p FROM Privilegio p"),
+    @NamedQuery(name = "Privilegio.findById", query = "SELECT p FROM Privilegio p WHERE p.id = :id"),
+    @NamedQuery(name = "Privilegio.findByNombre", query = "SELECT p FROM Privilegio p WHERE p.nombre = :nombre"),
+    @NamedQuery(name = "Privilegio.findByUrl", query = "SELECT p FROM Privilegio p WHERE p.url = :url"),
+    @NamedQuery(name = "Privilegio.findByEstado", query = "SELECT p FROM Privilegio p WHERE p.estado = :estado"),
+    @NamedQuery(name = "Privilegio.findByTiempoEstado", query = "SELECT p FROM Privilegio p WHERE p.tiempoEstado = :tiempoEstado")})
 public class Privilegio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

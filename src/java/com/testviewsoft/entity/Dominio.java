@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,6 +29,12 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "dominio")
+@NamedQueries({
+    @NamedQuery(name = "Dominio.findAll", query = "SELECT d FROM Dominio d"),
+    @NamedQuery(name = "Dominio.findById", query = "SELECT d FROM Dominio d WHERE d.id = :id"),
+    @NamedQuery(name = "Dominio.findByNombre", query = "SELECT d FROM Dominio d WHERE d.nombre = :nombre"),
+    @NamedQuery(name = "Dominio.findByEstado", query = "SELECT d FROM Dominio d WHERE d.estado = :estado"),
+    @NamedQuery(name = "Dominio.findByTiempoEstado", query = "SELECT d FROM Dominio d WHERE d.tiempoEstado = :tiempoEstado")})
 public class Dominio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
